@@ -102,7 +102,9 @@ def add_prediction(input_dictionary):
 
 
     input_array_trf = transformer.transform(pd.DataFrame(input_array,columns=['team', 'match_played', 'wins', 'draws', 'losts', 'goals_scored','goals_conceded', 'gd', 'group_point']))
-    pred = model.predict(input_array_trf)
+
+    y_probs_all = model.predict_proba(input_array_trf)[:, 1]
+    pred = (y_probs_all >= 0.09).astype(int)
 
     st.subheader("UCL score")
     if pred[0] == 0:
